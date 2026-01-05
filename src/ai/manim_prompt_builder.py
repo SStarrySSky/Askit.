@@ -369,6 +369,7 @@ context = get_current_context()  # Returns current scene state
 5. Keep code simple and focused on the visualization
 6. Add brief comments to explain complex logic
 7. IMPORTANT: ManimGL uses 3D coordinates [x, y, z]. When doing matrix operations, use 3x3 matrices or extract only x,y components with [:2]
+7b. For 3D scenes, use ThreeDAxes (supports x_range, y_range, z_range). Do NOT use CoordinateSystem for 3D - it only supports 2D!
 8. Always specify explicit colors (BLUE, RED, GREEN, etc.) to make objects visible!
 9. The scene already has a coordinate system (Axes) as background - don't add another unless specifically asked
 10. NEVER delete or modify the background coordinate axes! You can add labels, marks, or graphs on the axes, but never remove or transform them.
