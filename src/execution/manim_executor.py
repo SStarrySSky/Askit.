@@ -38,6 +38,7 @@ class ManimExecutor:
                 continue
             filtered.append(ln)
         code = chr(10).join(filtered)
+        globals_dict = self._build_globals()
 
         try:
             # Execute code with same namespace for globals/locals
