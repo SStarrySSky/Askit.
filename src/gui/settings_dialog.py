@@ -351,6 +351,7 @@ class SettingsDialog(QDialog):
         self.stack.setStyleSheet(f"background: {COLORS['bg']};")
         self.setup_providers_page()
         self.setup_graphics_page()
+        self.setup_feature_page()
         self.setup_about_page()
         content_layout.addWidget(self.stack, 1)
 
@@ -409,6 +410,7 @@ class SettingsDialog(QDialog):
         self.sidebar.setFocusPolicy(Qt.NoFocus)
         self.sidebar.addItem("AI Providers")
         self.sidebar.addItem("Graphics")
+        self.sidebar.addItem("Feature")
         self.sidebar.addItem("About")
         self.sidebar.setCurrentRow(0)
         self.sidebar.currentRowChanged.connect(self.on_page_changed)
@@ -497,6 +499,72 @@ class SettingsDialog(QDialog):
         layout.addWidget(self.fps_combo)
         layout.addStretch()
         self.stack.addWidget(page)
+
+    def setup_feature_page(self):
+        page = QWidget()
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(32, 32, 32, 32)
+        layout.setSpacing(20)
+
+        title = QLabel("Feature Mode")
+        title.setFont(QFont("Segoe UI", 18, QFont.Bold))
+        title.setStyleSheet(f"color: {COLORS['text']};")
+        layout.addWidget(title)
+
+        desc = QLabel("Select a mode based on your needs")
+        desc.setStyleSheet(f"color: {COLORS['text_muted']};")
+        layout.addWidget(desc)
+
+        # Mode buttons
+        self.mode_buttons = {}
+        modes = [
+            ("student", "Student Mode", "Basic features with guidance"),
+            ("competition", "Competition Mode", "Optimized for contests"),
+            ("engineering", "Engineering Mode", "Full features, no limits"),
+        ]
+        for mode_id, name, tip in modes:
+            btn = QPushButton(name)
+            btn.setToolTip(tip)
+            btn.setCursor(Qt.PointingHandCursor)
+            btn.setCheckable(True)
+            btn.clicked.connect(lambda c, m=mode_id: self._on_mode_selected(m))
+            self.mode_buttons[mode_id] = btn
+            layout.addWidget(btn)
+        self._update_mode_buttons()
+        self._apply_mode_button_style()
+
+        layout.addStretch()
+        self.stack.addWidget(page)
+
+    def _apply_mode_button_style(self):
+        for btn in self.mode_buttons.values():
+            btn.setStyleSheet(f"""
+                QPushButton {{
+                    background: {COLORS['input_bg']};
+                    border: 1px solid {COLORS['border']};
+                    border-radius: 8px;
+                    padding: 16px;
+                    color: {COLORS['text']};
+                    font-size: 14px;
+                    text-align: left;
+                }}
+                QPushButton:hover {{
+                    border-color: {COLORS['accent']};
+                }}
+                QPushButton:checked {{
+                    background: {COLORS['accent']};
+                    border-color: {COLORS['accent']};
+                }}
+            """)
+
+    def _on_mode_selected(self, mode_id: str):
+        self.config.feature_mode = mode_id
+        self._update_mode_buttons()
+
+    def _update_mode_buttons(self):
+        current = self.config.feature_mode
+        for m, btn in self.mode_buttons.items():
+            btn.setChecked(m == current)
 
     def setup_about_page(self):
         page = QWidget()

@@ -6,7 +6,12 @@ from typing import Dict, Any, List
 class ManimPromptBuilder:
     """Builds prompts with Manim API documentation for AI."""
 
-    def __init__(self):
+    def __init__(self, mode="student"):
+        self.mode = mode
+        self.system_prompt = self._build_system_prompt()
+
+    def set_mode(self, mode):
+        self.mode = mode
         self.system_prompt = self._build_system_prompt()
 
     def _build_system_prompt(self) -> str:

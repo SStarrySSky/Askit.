@@ -45,6 +45,9 @@ class Config(BaseModel):
     # Current provider selection
     current_provider: str = "openai"
 
+    # Feature mode: student, competition, engineering
+    feature_mode: str = "student"
+
     # Rendering
     rendering: RenderingConfig = Field(default_factory=RenderingConfig)
 
