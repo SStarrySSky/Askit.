@@ -532,8 +532,7 @@ class SettingsDialog(QDialog):
         layout.addStretch()
         self.stack.addWidget(page)
 
-    @asyncSlot()
-    async def on_fetch_models(self):
+    def on_fetch_models(self):
         """Fetch models from API."""
         api_key = self.claude_widget.api_key.text().strip()
         base_url = self.claude_widget.base_url.text().strip()
@@ -544,13 +543,16 @@ class SettingsDialog(QDialog):
 
         self.fetch_btn.setText("Fetching...")
         self.fetch_btn.setEnabled(False)
+        QTimer.singleShot(100, lambda: self._do_fetch_models(api_key, base_url))
 
+    def _do_fetch_models(self, api_key: str, base_url: str):
+        """Actually fetch models."""
         try:
             provider = OpenAIProvider(
                 api_key=api_key,
                 base_url=base_url if base_url else None
             )
-            model_ids = await provider.list_models()
+            model_ids = provider._list_models_sync()
             models = [{"id": m, "name": m, "description": ""} for m in model_ids]
 
             if models:
