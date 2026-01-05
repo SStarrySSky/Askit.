@@ -28,9 +28,16 @@ class ManimExecutor:
         Returns:
             Execution result dictionary
         """
-        # Prepare execution environment
-        # Use same dict for globals and locals to fix closure variable lookup
-        globals_dict = self._build_globals()
+        # Filter out manim imports
+        filtered = []
+        for ln in code.split(chr(10)):
+            s = ln.strip()
+            if s.startswith("from manim") or s.startswith("import manim"):
+                continue
+            if s.startswith("from manimlib") or s.startswith("import manimlib"):
+                continue
+            filtered.append(ln)
+        code = chr(10).join(filtered)
 
         try:
             # Execute code with same namespace for globals/locals
