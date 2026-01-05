@@ -577,7 +577,19 @@ class SettingsDialog(QDialog):
         self.accept()
 
     def load_settings(self):
-        pass
+        """Load settings from config."""
+        # Load OpenAI/compatible provider settings
+        openai_cfg = self.config.openai
+        if openai_cfg:
+            self.claude_widget.api_key.setText(openai_cfg.api_key or "")
+            self.claude_widget.base_url.setText(openai_cfg.base_url or "")
 
     def save_settings(self):
-        pass
+        """Save settings to config."""
+        # Update config
+        self.config.openai.api_key = self.claude_widget.api_key.text()
+        self.config.openai.base_url = self.claude_widget.base_url.text()
+        if self.claude_widget.selected_model:
+            self.config.openai.default_model = self.claude_widget.selected_model
+        # Save to file
+        self.config.save()

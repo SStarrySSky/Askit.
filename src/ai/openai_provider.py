@@ -166,7 +166,7 @@ class OpenAIProvider(AIProvider):
                 return models
         except Exception as e:
             logger.error(f"Error listing models: {e}")
-            return []
+            raise
 
     def validate_api_key(self) -> bool:
         """Validate the API key."""

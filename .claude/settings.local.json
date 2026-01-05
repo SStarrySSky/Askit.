@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(timeout 3 python:*)",
+      "Bash(cat:*)",
+      "WebSearch",
+      "Bash(pip uninstall:*)",
+      "Bash(timeout 5 python:*)",
+      "Bash(ls -la \"D:\\\\Projects\\\\PAskit\\\\src\\\\gui\\\\widgets\"\" 2>&1 || echo \"Directory does not exist \")",
+      "Bash(set:*)",
+      "Bash(.venvScriptspython.exe -m src.main)",
+      "Bash(python -m src.main:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git clone:*)",
+      "Bash(python -c:*)",
+      "Bash(dir:*)",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(ls:*)",
+      "Bash(python generate_activation_code.py:*)",
+      "Bash(python build.py:*)",
+      "Bash(where:*)",
+      "Bash(choco --version:*)",
+      "Bash(choco install:*)",
+      "Bash(python build_gui_installer.py:*)",
+      "Bash(xargs rm -rf)",
+      "Bash(xargs:*)",
+      "Bash(python scripts/build.py:*)",
+      "Bash(python scripts/build_gui_installer.py:*)",
+      "Bash(python scripts/convert_icon.py:*)",
+      "Bash(python scripts/create_icon.py:*)"
+    ]
+  }
+}
