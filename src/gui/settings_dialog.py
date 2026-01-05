@@ -132,7 +132,7 @@ class ModelGridSelector(QWidget):
         self.current_model = None
         self.setup_ui()
         self.setMaximumHeight(0)
-        self._target_height = 400
+        self._target_height = 600
 
     def setup_ui(self):
         self.main_layout = QVBoxLayout(self)
@@ -545,7 +545,8 @@ class SettingsDialog(QDialog):
                     border-radius: 8px;
                     padding: 16px;
                     color: {COLORS['text']};
-                    font-size: 14px;
+                    font-size: 18px;
+                font-weight: bold;
                     text-align: left;
                 }}
                 QPushButton:hover {{
