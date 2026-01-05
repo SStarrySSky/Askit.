@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Local config
+.env
+*.local
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.broken
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+media/
+output/JAnim/
