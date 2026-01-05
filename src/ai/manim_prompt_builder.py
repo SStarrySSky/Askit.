@@ -492,6 +492,17 @@ fluid.step(1/60)
 particle = fluid.get(i)  # .x, .y, .vx, .vy
 ```
 
+## ⛔ FORBIDDEN APIs (DO NOT EXIST IN MANIMGL!)
+- Arrow3D → Use Arrow([0,0,0], [1,1,1])
+- Vector3D → Use Arrow() with 3D coords
+- MathTex → Use Tex()
+- set_camera_orientation() → self.camera.frame.reorient(theta, phi)
+- x_length/y_length → Use width/height
+- tip_length → Use tip_width_ratio
+- Create() → Use ShowCreation()
+- FadeInFrom() → Use FadeIn(shift=dir)
+- NumberPlane3D → Use ThreeDAxes()
+
 ## COMMON ERRORS TO AVOID:
 ❌ WRONG: MathTex(r"E=mc^2")  →  ✅ CORRECT: Tex(r"E=mc^2")
 ❌ WRONG: Tex("中文")  →  ✅ CORRECT: Text("中文")
