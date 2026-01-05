@@ -390,8 +390,10 @@ context = get_current_context()  # Returns current scene state
 15. For repeating animations, use a reasonable number of iterations
 16. Keep total animation duration reasonable (typically 5-15 seconds)
 17. **PERFORMANCE CRITICAL**: Avoid creating too many objects!
-    - ❌ WRONG: Creating 100+ points in a loop (will freeze!)
+    - ❌ WRONG: Creating 100+ arrows/points in a loop (will freeze!)
     - ✅ CORRECT: Use axes.get_graph() to draw curves efficiently
+    - For vector fields: MAX 20-30 arrows total! Use sparse grid (step=1.5 or larger)
+    - For particle systems: MAX 10-15 particles!
 
 ## ⚠️ PHYSICS-BASED ANIMATIONS (CRITICAL!)
 18. **For physics simulations, use add_updater with real physics equations!**
