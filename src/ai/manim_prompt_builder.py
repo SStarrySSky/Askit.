@@ -392,8 +392,8 @@ context = get_current_context()  # Returns current scene state
 17. **PERFORMANCE CRITICAL**: Avoid creating too many objects!
     - ❌ WRONG: Creating 100+ arrows/points in a loop (will freeze!)
     - ✅ CORRECT: Use axes.get_graph() to draw curves efficiently
-    - For vector fields: MAX 20-30 arrows total! Use sparse grid (step=1.5 or larger)
-    - For particle systems: MAX 10-15 particles!
+    - For vector fields: Use 50-100 arrows for good visualization
+    - For particle systems: 30-50 particles is reasonable
 
 ## ⚠️ PHYSICS-BASED ANIMATIONS (CRITICAL!)
 18. **For physics simulations, use add_updater with real physics equations!**

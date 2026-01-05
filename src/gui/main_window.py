@@ -5,8 +5,8 @@ import ctypes
 from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QSplitter, QPushButton, QLabel
 )
-from PyQt5.QtCore import Qt, QTimer, QPointF, pyqtSignal, QSize
-from PyQt5.QtGui import QWheelEvent, QMouseEvent
+from PyQt5.QtCore import Qt, QTimer, QPointF, pyqtSignal, QSize, QThread, QMutex, QMutexLocker
+from PyQt5.QtGui import QWheelEvent, QMouseEvent, QImage, QPainter
 
 from src.gui.chat_panel import ChatPanel
 from src.gui.settings_dialog import SettingsDialog
@@ -58,6 +58,10 @@ class ManimRenderPanel(QWidget):
         # 3D camera rotation
         self.camera_theta = 0.0  # Horizontal rotation (degrees)
         self.camera_phi = 0.0    # Vertical rotation (degrees)
+
+        # Frame buffer for threaded rendering
+        self.frame_buffer = None
+        self.render_mutex = QMutex()
 
         # Mouse state
         self.is_panning = False
@@ -264,8 +268,9 @@ class ManimRenderPanel(QWidget):
             self.timeline.set_current_time(self.scene.timeline.current_time)
             self.timeline.set_duration(self.scene.timeline.total_duration)
 
-        # Trigger repaint only if visible
+        # Render to buffer and trigger repaint
         if self.isVisible():
+            self._render_to_buffer()
             self.update()
 
     def set_framerate(self, fps: int):
@@ -754,31 +759,36 @@ class ManimRenderPanel(QWidget):
         # Continue animation at ~60fps
         QTimer.singleShot(16, self._animate_zoom)
 
-    def paintEvent(self, event):
-        """Paint event - render ManimGL scene using QPainter."""
-        from PyQt5.QtGui import QPainter, QColor
-        from loguru import logger
-
-        painter = QPainter(self)
-
-        # Use dark background matching window color
-        bg_color = QColor(self.BG_COLOR)
-
-        # Check if scene and renderer are ready
+    def _render_to_buffer(self):
+        """Render scene to buffer image."""
         if not self.scene or not self.renderer:
-            painter.fillRect(self.rect(), bg_color)
-            painter.end()
             return
-
+        from PyQt5.QtGui import QColor
+        w, h = self.width(), self.height()
+        if w <= 0 or h <= 0:
+            return
+        img = QImage(w, h, QImage.Format_RGB32)
+        img.fill(QColor(self.BG_COLOR))
+        painter = QPainter(img)
+        painter.setRenderHint(QPainter.Antialiasing, True)
         try:
-            # Set background color in renderer
-            self.renderer.bg_color = bg_color
-            # Render ManimGL mobjects using QPainter
+            self.renderer.bg_color = QColor(self.BG_COLOR)
             self.renderer.render(painter, self.scene.mobjects)
-        except Exception as e:
-            logger.exception(f"[paintEvent] Rendering failed: {e}")
-            painter.fillRect(self.rect(), QColor(255, 0, 0))
+        except:
+            pass
+        painter.end()
+        with QMutexLocker(self.render_mutex):
+            self.frame_buffer = img
 
+    def paintEvent(self, event):
+        """Paint cached frame buffer."""
+        from PyQt5.QtGui import QColor
+        painter = QPainter(self)
+        with QMutexLocker(self.render_mutex):
+            if self.frame_buffer:
+                painter.drawImage(0, 0, self.frame_buffer)
+            else:
+                painter.fillRect(self.rect(), QColor(self.BG_COLOR))
         painter.end()
 
 
