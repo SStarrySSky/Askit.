@@ -97,56 +97,12 @@ jobs:
           name: Askit-Linux-arm64
           path: dist/Askit-Linux-arm64
 
-  build-macos-x64:
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install system dependencies
-        run: |
-          brew install cairo pango ffmpeg
-
-      - name: Install Python dependencies
-        run: |
-          pip install --upgrade pip
-          pip install pyinstaller
-          pip install -r requirements.txt
-
-      - name: Build executable
-        run: |
-          pyinstaller --name=Askit-macOS-x64 \
-            --onefile \
-            --add-data="assets:assets" \
-            --hidden-import=PyQt5 \
-            --hidden-import=qasync \
-            --hidden-import=loguru \
-            --hidden-import=pydantic \
-            --hidden-import=numpy \
-            --hidden-import=scipy \
-            --hidden-import=OpenGL \
-            --hidden-import=manimlib \
-            --hidden-import=manimpango \
-            --collect-all=manimpango \
-            --collect-data=manimlib \
-            run.py
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Askit-macOS-x64
-          path: dist/Askit-macOS-x64
-
-  build-macos-arm64:
+  build-macos-universal:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python (arm64)
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -161,9 +117,9 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
 
-      - name: Build executable
+      - name: Build arm64 executable
         run: |
-          pyinstaller --name=Askit-macOS-arm64 \
+          pyinstaller --name=Askit-arm64 \
             --onefile \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
@@ -178,15 +134,48 @@ jobs:
             --collect-all=manimpango \
             --collect-data=manimlib \
             run.py
+          mv dist/Askit-arm64 dist/Askit-arm64-bin
+
+      - name: Set up Python (x64 via Rosetta)
+        run: |
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || true
+          arch -x86_64 /usr/local/bin/brew install python@3.11 || true
+
+      - name: Build x64 executable
+        run: |
+          rm -rf build dist *.spec
+          arch -x86_64 /usr/local/bin/python3.11 -m pip install --upgrade pip
+          arch -x86_64 /usr/local/bin/python3.11 -m pip install pyinstaller
+          arch -x86_64 /usr/local/bin/python3.11 -m pip install -r requirements.txt
+          arch -x86_64 /usr/local/bin/python3.11 -m PyInstaller --name=Askit-x64 \
+            --onefile \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+          mv dist/Askit-x64 dist/Askit-x64-bin
+
+      - name: Create Universal binary
+        run: |
+          lipo -create -output dist/Askit-macOS-Universal dist/Askit-arm64-bin dist/Askit-x64-bin
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Askit-macOS-arm64
-          path: dist/Askit-macOS-arm64
+          name: Askit-macOS-Universal
+          path: dist/Askit-macOS-Universal
 
   release:
-    needs: [build-linux-x64, build-linux-arm64, build-macos-x64, build-macos-arm64]
+    needs: [build-linux-x64, build-linux-arm64, build-macos-universal]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
@@ -199,7 +188,6 @@ jobs:
           files: |
             Askit-Linux-x64/Askit-Linux-x64
             Askit-Linux-arm64/Askit-Linux-arm64
-            Askit-macOS-x64/Askit-macOS-x64
-            Askit-macOS-arm64/Askit-macOS-arm64
+            Askit-macOS-Universal/Askit-macOS-Universal
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
