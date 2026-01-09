@@ -121,7 +121,22 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          brew install cairo pango ffmpeg
+          brew install cairo pango ffmpeg create-dmg
+
+      - name: Create icns icon
+        run: |
+          mkdir -p Askit.iconset
+          sips -z 16 16 assets/icon.png --out Askit.iconset/icon_16x16.png
+          sips -z 32 32 assets/icon.png --out Askit.iconset/icon_16x16@2x.png
+          sips -z 32 32 assets/icon.png --out Askit.iconset/icon_32x32.png
+          sips -z 64 64 assets/icon.png --out Askit.iconset/icon_32x32@2x.png
+          sips -z 128 128 assets/icon.png --out Askit.iconset/icon_128x128.png
+          sips -z 256 256 assets/icon.png --out Askit.iconset/icon_128x128@2x.png
+          sips -z 256 256 assets/icon.png --out Askit.iconset/icon_256x256.png
+          sips -z 512 512 assets/icon.png --out Askit.iconset/icon_256x256@2x.png
+          sips -z 512 512 assets/icon.png --out Askit.iconset/icon_512x512.png
+          sips -z 1024 1024 assets/icon.png --out Askit.iconset/icon_512x512@2x.png
+          iconutil -c icns Askit.iconset -o Askit.icns
 
       - name: Install Python dependencies
         run: |
@@ -144,6 +159,7 @@ jobs:
           pyinstaller --name=Askit \
             --onedir \
             --windowed \
+            --icon=Askit.icns \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
             --hidden-import=qasync \
@@ -158,10 +174,21 @@ jobs:
             --collect-data=manimlib \
             run.py
 
-      - name: Create DMG
+      - name: Ad-hoc code sign
         run: |
-          cd dist
-          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-arm64.dmg
+          codesign --force --deep --sign - dist/Askit.app
+
+      - name: Create DMG with drag-to-Applications
+        run: |
+          create-dmg \
+            --volname "Askit" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Askit.app" 150 185 \
+            --app-drop-link 450 185 \
+            "dist/Askit-macOS-arm64.dmg" \
+            "dist/Askit.app"
 
       - name: Upload DMG
         uses: actions/upload-artifact@v4
@@ -181,7 +208,22 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          brew install cairo pango ffmpeg
+          brew install cairo pango ffmpeg create-dmg
+
+      - name: Create icns icon
+        run: |
+          mkdir -p Askit.iconset
+          sips -z 16 16 assets/icon.png --out Askit.iconset/icon_16x16.png
+          sips -z 32 32 assets/icon.png --out Askit.iconset/icon_16x16@2x.png
+          sips -z 32 32 assets/icon.png --out Askit.iconset/icon_32x32.png
+          sips -z 64 64 assets/icon.png --out Askit.iconset/icon_32x32@2x.png
+          sips -z 128 128 assets/icon.png --out Askit.iconset/icon_128x128.png
+          sips -z 256 256 assets/icon.png --out Askit.iconset/icon_128x128@2x.png
+          sips -z 256 256 assets/icon.png --out Askit.iconset/icon_256x256.png
+          sips -z 512 512 assets/icon.png --out Askit.iconset/icon_256x256@2x.png
+          sips -z 512 512 assets/icon.png --out Askit.iconset/icon_512x512.png
+          sips -z 1024 1024 assets/icon.png --out Askit.iconset/icon_512x512@2x.png
+          iconutil -c icns Askit.iconset -o Askit.icns
 
       - name: Install Python dependencies
         run: |
@@ -204,6 +246,7 @@ jobs:
           pyinstaller --name=Askit \
             --onedir \
             --windowed \
+            --icon=Askit.icns \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
             --hidden-import=qasync \
@@ -218,10 +261,21 @@ jobs:
             --collect-data=manimlib \
             run.py
 
-      - name: Create DMG
+      - name: Ad-hoc code sign
         run: |
-          cd dist
-          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-x64.dmg
+          codesign --force --deep --sign - dist/Askit.app
+
+      - name: Create DMG with drag-to-Applications
+        run: |
+          create-dmg \
+            --volname "Askit" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Askit.app" 150 185 \
+            --app-drop-link 450 185 \
+            "dist/Askit-macOS-x64.dmg" \
+            "dist/Askit.app"
 
       - name: Upload DMG
         uses: actions/upload-artifact@v4
