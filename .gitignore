@@ -42,6 +42,18 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Project specific
+# Project specific - exclude large folders
 media/
-output/JAnim/
+output/
+JAnim/
+Others/
+assets/
+data/
+finetune/
+release/
+scripts/
+resources/
+.claude/
+
+# Exclude spec files
+*.spec
