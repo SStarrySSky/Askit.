@@ -142,7 +142,7 @@ jobs:
       - name: Build macOS app
         run: |
           pyinstaller --name=Askit \
-            --onefile \
+            --onedir \
             --windowed \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
@@ -158,11 +158,16 @@ jobs:
             --collect-data=manimlib \
             run.py
 
-      - name: Upload binary
+      - name: Create DMG
+        run: |
+          cd dist
+          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-arm64.dmg
+
+      - name: Upload DMG
         uses: actions/upload-artifact@v4
         with:
-          name: Askit-macOS-arm64-bin
-          path: dist/Askit
+          name: Askit-macOS-arm64
+          path: dist/Askit-macOS-arm64.dmg
 
   build-macos-x64:
     runs-on: macos-13
@@ -197,7 +202,7 @@ jobs:
       - name: Build macOS app
         run: |
           pyinstaller --name=Askit \
-            --onefile \
+            --onedir \
             --windowed \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
@@ -213,65 +218,19 @@ jobs:
             --collect-data=manimlib \
             run.py
 
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: Askit-macOS-x64-bin
-          path: dist/Askit
-
-  build-macos-universal:
-    needs: [build-macos-arm64, build-macos-x64]
-    runs-on: macos-latest
-    steps:
-      - name: Download arm64 binary
-        uses: actions/download-artifact@v4
-        with:
-          name: Askit-macOS-arm64-bin
-          path: arm64
-
-      - name: Download x64 binary
-        uses: actions/download-artifact@v4
-        with:
-          name: Askit-macOS-x64-bin
-          path: x64
-
-      - name: Create Universal binary
-        run: |
-          chmod +x arm64/Askit x64/Askit
-          lipo -create -output Askit-Universal arm64/Askit x64/Askit
-          file Askit-Universal
-
       - name: Create DMG
         run: |
-          mkdir -p Askit.app/Contents/MacOS
-          cp Askit-Universal Askit.app/Contents/MacOS/Askit
-          chmod +x Askit.app/Contents/MacOS/Askit
-          cat > Askit.app/Contents/Info.plist << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>CFBundleExecutable</key>
-            <string>Askit</string>
-            <key>CFBundleIdentifier</key>
-            <string>com.askit.app</string>
-            <key>CFBundleName</key>
-            <string>Askit</string>
-            <key>CFBundleVersion</key>
-            <string>1.0</string>
-          </dict>
-          </plist>
-          EOF
-          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-Universal.dmg
+          cd dist
+          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-x64.dmg
 
-      - name: Upload Universal DMG
+      - name: Upload DMG
         uses: actions/upload-artifact@v4
         with:
-          name: Askit-macOS-Universal
-          path: Askit-macOS-Universal.dmg
+          name: Askit-macOS-x64
+          path: dist/Askit-macOS-x64.dmg
 
   release:
-    needs: [build-linux-x64, build-linux-arm64, build-macos-universal]
+    needs: [build-linux-x64, build-linux-arm64, build-macos-arm64, build-macos-x64]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
@@ -284,6 +243,7 @@ jobs:
           files: |
             Askit-Linux-x64/Askit-Linux-x64.tar.gz
             Askit-Linux-arm64/Askit-Linux-arm64.tar.gz
-            Askit-macOS-Universal/Askit-macOS-Universal.dmg
+            Askit-macOS-arm64/Askit-macOS-arm64.dmg
+            Askit-macOS-x64/Askit-macOS-x64.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
