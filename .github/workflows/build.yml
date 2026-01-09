@@ -1,0 +1,205 @@
+name: Build Multi-Platform
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libpango1.0-dev ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=Askit-Linux-x64 \
+            --onefile \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-Linux-x64
+          path: dist/Askit-Linux-x64
+
+  build-linux-arm64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libpango1.0-dev ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=Askit-Linux-arm64 \
+            --onefile \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-Linux-arm64
+          path: dist/Askit-Linux-arm64
+
+  build-macos-x64:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          brew install cairo pango ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=Askit-macOS-x64 \
+            --onefile \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-macOS-x64
+          path: dist/Askit-macOS-x64
+
+  build-macos-arm64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          brew install cairo pango ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=Askit-macOS-arm64 \
+            --onefile \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-macOS-arm64
+          path: dist/Askit-macOS-arm64
+
+  release:
+    needs: [build-linux-x64, build-linux-arm64, build-macos-x64, build-macos-arm64]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            Askit-Linux-x64/Askit-Linux-x64
+            Askit-Linux-arm64/Askit-Linux-arm64
+            Askit-macOS-x64/Askit-macOS-x64
+            Askit-macOS-arm64/Askit-macOS-arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

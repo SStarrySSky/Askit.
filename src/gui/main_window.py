@@ -1,6 +1,7 @@
 """Main application window."""
 
 import sys
+import os
 import ctypes
 from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QSplitter, QPushButton, QLabel
@@ -16,6 +17,7 @@ from src.core.config import Config
 from src.core.events import get_event_bus
 from src.ai import AnthropicProvider, ManimPromptBuilder, CodeParser
 from src.execution import ManimExecutor
+from src.utils import get_icon_path
 import asyncio
 
 
@@ -151,10 +153,9 @@ class ManimRenderPanel(QWidget):
         self.settings_btn.move(8, 8)
 
         # Load settings icon
-        import os
-        settings_icon_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "icons", "settings.svg")
+        from PyQt5.QtGui import QIcon
+        settings_icon_path = get_icon_path("settings")
         if os.path.exists(settings_icon_path):
-            from PyQt5.QtGui import QIcon
             self.settings_btn.setIcon(QIcon(settings_icon_path))
 
         # Reset button (next to settings)
@@ -167,9 +168,8 @@ class ManimRenderPanel(QWidget):
         self.reset_btn.move(60, 8)
 
         # Load home icon
-        home_icon_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "icons", "home.svg")
+        home_icon_path = get_icon_path("home")
         if os.path.exists(home_icon_path):
-            from PyQt5.QtGui import QIcon
             self.reset_btn.setIcon(QIcon(home_icon_path))
 
         # 2D/3D toggle button (next to reset)
@@ -184,9 +184,8 @@ class ManimRenderPanel(QWidget):
         self.view_3d_btn.move(112, 8)
 
         # Load cube icon for 3D mode (default shows cube = click to go 3D)
-        cube_icon_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "icons", "cube.svg")
+        cube_icon_path = get_icon_path("cube")
         if os.path.exists(cube_icon_path):
-            from PyQt5.QtGui import QIcon
             self.view_3d_btn.setIcon(QIcon(cube_icon_path))
 
         # 3D view state
@@ -505,7 +504,7 @@ class ManimRenderPanel(QWidget):
             self.target_theta = 45.0
             self.target_phi = 30.0
             # Switch to plane icon (click to go back to 2D)
-            plane_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "icons", "plane.svg")
+            plane_path = get_icon_path("plane")
             if os.path.exists(plane_path):
                 self.view_3d_btn.setIcon(QIcon(plane_path))
             # Add z-axis for 3D mode
@@ -516,7 +515,7 @@ class ManimRenderPanel(QWidget):
             self.target_theta = 0.0
             self.target_phi = 0.0
             # Switch to cube icon (click to go to 3D)
-            cube_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "icons", "cube.svg")
+            cube_path = get_icon_path("cube")
             if os.path.exists(cube_path):
                 self.view_3d_btn.setIcon(QIcon(cube_path))
             # Remove z-axis for 2D mode

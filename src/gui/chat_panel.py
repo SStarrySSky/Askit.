@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import pyqtSignal, Qt, QSize, QTimer, QPropertyAnimation, QEasingCurve
 from PyQt5.QtGui import QFont, QTextCursor, QIcon, QPainter, QColor, QPen
 import os
+from src.utils import get_icon_path
 
 
 class LoadingWidget(QWidget):
@@ -91,10 +92,7 @@ class ToolbarButton(QPushButton):
         self._active = False
 
         # Try to load SVG icon
-        icon_path = os.path.join(
-            os.path.dirname(__file__),
-            "..", "..", "assets", "icons", f"{icon_name}.svg"
-        )
+        icon_path = get_icon_path(icon_name)
         if os.path.exists(icon_path):
             self.setIcon(QIcon(icon_path))
 
@@ -324,10 +322,7 @@ class ChatPanel(QWidget):
         self.send_button.clicked.connect(self.send_message)
 
         # Load send icon
-        send_icon_path = os.path.join(
-            os.path.dirname(__file__),
-            "..", "..", "assets", "icons", "send.svg"
-        )
+        send_icon_path = get_icon_path("send")
         if os.path.exists(send_icon_path):
             self.send_button.setIcon(QIcon(send_icon_path))
 

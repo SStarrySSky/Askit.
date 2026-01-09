@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, pyqtSignal, QSize
 from PyQt5.QtGui import QIcon, QFont
+from src.utils import get_icon_path
 
 
 class NoWheelSlider(QSlider):
@@ -41,16 +42,13 @@ class AnimationTimeline(QWidget):
         layout.setContentsMargins(5, 5, 15, 5)
         layout.setSpacing(4)
 
-        # Icon path helper
-        icon_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons")
-
         # Reverse play button
         self.reverse_button = QPushButton()
         self.reverse_button.setFixedSize(40, 32)
         self.reverse_button.setIconSize(QSize(20, 20))
         self.reverse_button.setToolTip("Play Reverse")
         self.reverse_button.clicked.connect(self.on_reverse_clicked)
-        rewind_path = os.path.join(icon_dir, "rewind.svg")
+        rewind_path = get_icon_path("rewind")
         if os.path.exists(rewind_path):
             self.reverse_button.setIcon(QIcon(rewind_path))
         layout.addWidget(self.reverse_button)
@@ -61,7 +59,7 @@ class AnimationTimeline(QWidget):
         self.play_button.setIconSize(QSize(20, 20))
         self.play_button.setToolTip("Play/Pause")
         self.play_button.clicked.connect(self.toggle_play_pause)
-        play_path = os.path.join(icon_dir, "play.svg")
+        play_path = get_icon_path("play")
         if os.path.exists(play_path):
             self.play_button.setIcon(QIcon(play_path))
         layout.addWidget(self.play_button)
@@ -72,7 +70,7 @@ class AnimationTimeline(QWidget):
         self.reset_button.setIconSize(QSize(20, 20))
         self.reset_button.setToolTip("Reset to beginning")
         self.reset_button.clicked.connect(self.on_reset_clicked)
-        reset_path = os.path.join(icon_dir, "reset.svg")
+        reset_path = get_icon_path("reset")
         if os.path.exists(reset_path):
             self.reset_button.setIcon(QIcon(reset_path))
         layout.addWidget(self.reset_button)
@@ -154,7 +152,7 @@ class AnimationTimeline(QWidget):
         self.is_playing = True
         self.is_reversing = False
         # Switch to pause icon
-        pause_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons", "pause.svg")
+        pause_path = get_icon_path("pause")
         if os.path.exists(pause_path):
             self.play_button.setIcon(QIcon(pause_path))
         self.reverse_button.setStyleSheet("")
@@ -178,7 +176,7 @@ class AnimationTimeline(QWidget):
         self.is_playing = False
         self.is_reversing = False
         # Switch to play icon
-        play_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons", "play.svg")
+        play_path = get_icon_path("play")
         if os.path.exists(play_path):
             self.play_button.setIcon(QIcon(play_path))
         self.pause_requested.emit()
@@ -240,7 +238,7 @@ class AnimationTimeline(QWidget):
         self.is_playing = False
         self.is_reversing = False
         # Switch to play icon
-        play_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons", "play.svg")
+        play_path = get_icon_path("play")
         if os.path.exists(play_path):
             self.play_button.setIcon(QIcon(play_path))
         self.slider.setValue(0)
