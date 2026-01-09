@@ -54,6 +54,7 @@ release/
 scripts/
 resources/
 .claude/
+docs/
 
 # Exclude spec files
 *.spec
