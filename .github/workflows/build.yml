@@ -109,7 +109,7 @@ jobs:
           name: Askit-Linux-arm64
           path: dist/Askit-Linux-arm64.tar.gz
 
-  build-macos-universal:
+  build-macos-arm64:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -129,10 +129,20 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
 
+      - name: Fix PyQt5 framework symlinks
+        run: |
+          PYQT_PATH=$(python -c "import PyQt5; print(PyQt5.__path__[0])")
+          find "$PYQT_PATH" -name "*.framework" -type d | while read fw; do
+            if [ -d "$fw/Versions" ]; then
+              rm -rf "$fw/Resources" 2>/dev/null || true
+              rm -rf "$fw/Headers" 2>/dev/null || true
+            fi
+          done
+
       - name: Build macOS app
         run: |
           pyinstaller --name=Askit \
-            --onedir \
+            --onefile \
             --windowed \
             --add-data="assets:assets" \
             --hidden-import=PyQt5 \
@@ -146,19 +156,119 @@ jobs:
             --hidden-import=manimpango \
             --collect-all=manimpango \
             --collect-data=manimlib \
-            --collect-all=PyQt5 \
             run.py
 
-      - name: Package as dmg
-        run: |
-          cd dist
-          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS.dmg
-
-      - name: Upload artifact
+      - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: Askit-macOS
-          path: dist/Askit-macOS.dmg
+          name: Askit-macOS-arm64-bin
+          path: dist/Askit
+
+  build-macos-x64:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          brew install cairo pango ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Fix PyQt5 framework symlinks
+        run: |
+          PYQT_PATH=$(python -c "import PyQt5; print(PyQt5.__path__[0])")
+          find "$PYQT_PATH" -name "*.framework" -type d | while read fw; do
+            if [ -d "$fw/Versions" ]; then
+              rm -rf "$fw/Resources" 2>/dev/null || true
+              rm -rf "$fw/Headers" 2>/dev/null || true
+            fi
+          done
+
+      - name: Build macOS app
+        run: |
+          pyinstaller --name=Askit \
+            --onefile \
+            --windowed \
+            --add-data="assets:assets" \
+            --hidden-import=PyQt5 \
+            --hidden-import=qasync \
+            --hidden-import=loguru \
+            --hidden-import=pydantic \
+            --hidden-import=numpy \
+            --hidden-import=scipy \
+            --hidden-import=OpenGL \
+            --hidden-import=manimlib \
+            --hidden-import=manimpango \
+            --collect-all=manimpango \
+            --collect-data=manimlib \
+            run.py
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-macOS-x64-bin
+          path: dist/Askit
+
+  build-macos-universal:
+    needs: [build-macos-arm64, build-macos-x64]
+    runs-on: macos-latest
+    steps:
+      - name: Download arm64 binary
+        uses: actions/download-artifact@v4
+        with:
+          name: Askit-macOS-arm64-bin
+          path: arm64
+
+      - name: Download x64 binary
+        uses: actions/download-artifact@v4
+        with:
+          name: Askit-macOS-x64-bin
+          path: x64
+
+      - name: Create Universal binary
+        run: |
+          chmod +x arm64/Askit x64/Askit
+          lipo -create -output Askit-Universal arm64/Askit x64/Askit
+          file Askit-Universal
+
+      - name: Create DMG
+        run: |
+          mkdir -p Askit.app/Contents/MacOS
+          cp Askit-Universal Askit.app/Contents/MacOS/Askit
+          chmod +x Askit.app/Contents/MacOS/Askit
+          cat > Askit.app/Contents/Info.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key>
+            <string>Askit</string>
+            <key>CFBundleIdentifier</key>
+            <string>com.askit.app</string>
+            <key>CFBundleName</key>
+            <string>Askit</string>
+            <key>CFBundleVersion</key>
+            <string>1.0</string>
+          </dict>
+          </plist>
+          EOF
+          hdiutil create -volname "Askit" -srcfolder Askit.app -ov -format UDZO Askit-macOS-Universal.dmg
+
+      - name: Upload Universal DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Askit-macOS-Universal
+          path: Askit-macOS-Universal.dmg
 
   release:
     needs: [build-linux-x64, build-linux-arm64, build-macos-universal]
@@ -174,6 +284,6 @@ jobs:
           files: |
             Askit-Linux-x64/Askit-Linux-x64.tar.gz
             Askit-Linux-arm64/Askit-Linux-arm64.tar.gz
-            Askit-macOS/Askit-macOS.dmg
+            Askit-macOS-Universal/Askit-macOS-Universal.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
