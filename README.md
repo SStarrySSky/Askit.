@@ -24,7 +24,7 @@
 
 </div>
 
-# 📖 Askit. User Manual
+# 📖 Askit. Intro
 
 Welcome to Askit. - AI-Powered Interactive Math Animation Teaching Software!
 
