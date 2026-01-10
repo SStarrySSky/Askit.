@@ -1,476 +1,179 @@
-# 📖 Askit. 用户手册
+<div align="center">
 
-欢迎使用 Askit. - AI驱动的交互式数学动画教学软件！
+**[English](README.md)** | **[中文](README_CN.md)**
 
-本手册将帮助您快速上手并充分利用 Askit. 的强大功能。
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=60&pause=1000&color=000000&center=true&vCenter=true&repeat=false&width=250&height=80&lines=Ask%E2%9C%A6t." alt="Askit Logo" />
 
----
+### 🚀 AI-Powered Interactive Math Animation Teaching Software
 
-## 🤖 微调模型
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![C++](https://img.shields.io/badge/C++-17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)](https://isocpp.org/)
 
-### 什么是微调模型？
-
-**微调模型**是专为 Askit. 定制调优的 AI 模型，基于 olmo-thinking 架构打造，经过大量物理和数学问题的训练，具有极强的空间理解能力和表达能力。
-
-### 核心特性
-
-#### 1. **空间理解能力**
-- 深度理解三维空间中的物体位置关系
-- 精确计算坐标、角度、距离等几何参数
-- 自动推导物体的初始位置和运动轨迹
-
-#### 2. **物理建模能力**
-- 熟练掌握经典力学、电磁学、热力学等物理概念
-- 能够将物理问题转化为 PhysicsBridge API 调用
-- 支持复杂的多体系统和约束系统建模
-
-#### 3. **高难度问题优化**
-- 针对 CPhO（中国物理奥林匹克）难度问题特别优化
-- 针对 IMO（国际数学奥林匹克）难度问题特别优化
-- 能够处理需要深度推理的复杂问题
-
-### 使用场景
-
-微调模型特别适合以下场景：
-
-1. **竞赛级物理问题**：CPhO、IPhO 等竞赛难度的物理模拟
-2. **高级数学可视化**：IMO 级别的数学问题动画演示
-3. **学术研究仿真**：需要精确物理建模的研究项目
-4. **教学演示**：需要高质量动画的课堂教学
+[![HuggingFace](https://img.shields.io/badge/🤗%20Model-Askit--OLMo--32B-yellow?style=for-the-badge)](https://huggingface.co/SStarrySSky/Askit-OLMo-32B-Spatial-Thinking-Preview)
+[![Website](https://img.shields.io/badge/🌐%20Website-askit.space-green?style=for-the-badge)](https://askit.space)
+[![Docs](https://img.shields.io/badge/📖%20Docs-User%20Manual-orange?style=for-the-badge)](https://github.com/SStarrySSky/Askit./blob/main/Manual_EN.md)
 
 ---
 
-## ⚙️ API 配置教程
+[🤖 Fine-tuned Model](#-fine-tuned-model) • [⚙️ API Config](#️-api-configuration) • [🔬 Physics Engine](#-physics-engine) • [📸 Snapshot](#-snapshot-feature) • [🎬 Real-time Rendering](#-real-time-rendering) • [⏱️ Timeline](#️-timeline-control) • [🎛️ Interactive Controls](#️-interactive-controls)
 
-### 什么是 API Key？
+---
 
-**API Key（应用程序接口密钥）** 是一个唯一的身份验证令牌，用于访问 AI 服务提供商的 API。可以把它想象成一把"钥匙"，让 Askit 能够与 AI 服务进行通信。
+</div>
 
-**为什么需要 API Key？**
-- Askit 使用 AI 来理解您的自然语言指令并生成数学动画代码
-- AI 服务需要验证您的身份以提供服务
-- API Key 确保只有授权用户才能使用 AI 功能
+# 📖 Askit. User Manual
 
-### 什么是 Base URL？
+Welcome to Askit. - AI-Powered Interactive Math Animation Teaching Software!
 
-**Base URL（基础网址）** 是 AI 服务的访问地址，告诉 Askit 应该连接到哪个服务器来获取 AI 响应。
+This manual will help you get started and make the most of Askit.'s powerful features.
 
-**为什么需要 Base URL？**
-- 不同的 AI 服务提供商有不同的服务器地址
-- 某些免费 API 服务使用自定义的 Base URL
-- 配置正确的 Base URL 确保 Askit. 能够正确连接到 AI 服务
+---
 
-### 免费 API 服务推荐
+## 🤖 Fine-tuned Model
 
-对于免费用户，我们推荐以下兼容 Claude API 的免费服务：
+<div align="center">
 
-#### 1. **OpenRouter**（推荐）
+[![HuggingFace Model](https://img.shields.io/badge/🤗%20HuggingFace-Askit--OLMo--32B--Spatial--Thinking--Preview-yellow?style=for-the-badge)](https://huggingface.co/SStarrySSky/Askit-OLMo-32B-Spatial-Thinking-Preview)
 
-OpenRouter 提供多种 AI 模型的访问，包括免费额度。
+</div>
 
-- **官网**: https://openrouter.ai
-- **特点**:
-  - 新用户有免费额度
-  - 支持多种 AI 模型
-  - 稳定可靠
+### What is the Fine-tuned Model?
+
+The **fine-tuned model** is an AI model custom-optimized for Askit., built on the OLMo-thinking architecture. Trained on extensive physics and mathematics problems, it possesses exceptional spatial understanding and expression capabilities.
+
+### Core Features
+
+#### 1. **Spatial Understanding**
+- Deep understanding of object positions in 3D space
+- Precise calculation of coordinates, angles, distances, and other geometric parameters
+- Automatic derivation of initial positions and motion trajectories
+
+#### 2. **Physics Modeling**
+- Proficient in classical mechanics, electromagnetism, thermodynamics concepts
+- Capable of translating physics problems into PhysicsBridge API calls
+- Supports complex multi-body systems and constraint modeling
+
+#### 3. **Advanced Problem Optimization**
+- Specially optimized for CPhO (Chinese Physics Olympiad) level problems
+- Specially optimized for IMO (International Mathematical Olympiad) level problems
+- Capable of handling complex problems requiring deep reasoning
+
+### Use Cases
+
+1. **Competition-level Physics**: Physics simulations at CPhO, IPhO difficulty levels
+2. **Advanced Math Visualization**: IMO-level mathematical problem animations
+3. **Academic Research Simulation**: Research projects requiring precise physics modeling
+4. **Teaching Demonstrations**: Classroom teaching requiring high-quality animations
+
+---
+
+## ⚙️ API Configuration
+
+### What is an API Key?
+
+An **API Key** is a unique authentication token used to access AI service provider APIs.
+
+### Recommended Free API Services
+
+#### 1. **OpenRouter** (Recommended)
+
+- **Website**: https://openrouter.ai
+- **Features**: Free credits for new users, supports multiple AI models, stable and reliable
 - **Base URL**: `https://openrouter.ai/api/v1`
 
-#### 2. **其他兼容服务**
+### Configuring API in Askit.
 
-您也可以使用任何兼容 Claude API 格式的服务，只需正确配置 Base URL 和 API Key。
-
-### 如何获取 API Key
-
-以 OpenRouter 为例，获取 API Key 的步骤：
-
-1. **注册账号**
-   - 访问 https://openrouter.ai
-   - 点击右上角的 "Sign Up" 注册账号
-   - 使用邮箱或 Google 账号注册
-
-2. **获取 API Key**
-   - 登录后，点击右上角的用户头像
-   - 选择 "API Keys" 或 "Settings"
-   - 点击 "Create API Key" 创建新的密钥
-   - 复制生成的 API Key（格式类似：`sk-or-v1-xxxxxxxxxxxxx`）
-   - ⚠️ **重要**：请妥善保管您的 API Key，不要分享给他人
-
-3. **查看额度**
-   - 在账户页面可以查看剩余的免费额度
-   - 免费额度用完后可以充值继续使用
-
-### 在 Askit. 中配置 API
-
-获取 API Key 后，按照以下步骤在 Askit. 中配置：
-
-1. **打开设置**
-   - 启动 Askit. 应用程序
-   - 点击右上角的 ⚙️ **设置按钮**
-
-2. **配置 API 信息**
-   - 在设置窗口中找到 "AI 配置" 部分
-   - **API Provider**: 选择 `Claude`
-   - **API Key**: 粘贴您从 OpenRouter 获取的 API Key
-   - **Base URL**: 输入 `https://openrouter.ai/api/v1`
-   - **Model**: 选择 `claude-3-5-sonnet-20241022`（推荐）
-
-3. **保存并测试**
-   - 点击 "保存" 按钮
-   - 在聊天框中输入测试消息，如："你好"
-   - 如果配置正确，AI 应该会回复您
-
-### 常见问题
-
-**Q: 为什么我的 API Key 无法使用？**
-- 检查 API Key 是否完整复制（没有多余空格）
-- 确认 Base URL 是否正确
-- 检查账户是否还有剩余额度
-
-**Q: 可以使用官方 Claude API 吗？**
-- 可以！如果您有 Anthropic 官方 API Key：
-  - Base URL: `https://api.anthropic.com`
-  - API Key: 您的官方 API Key
-
-**Q: 配置后没有反应怎么办？**
-- 检查网络连接是否正常
-- 查看日志文件了解详细错误信息
-- 尝试重启 Askit. 应用程序
+1. **Open Settings** - Click the ⚙️ settings button in the top right corner
+2. **Configure API Information**
+   - API Provider: `Claude`
+   - API Key: Your API Key
+   - Base URL: `https://openrouter.ai/api/v1`
+   - Model: `claude-3-5-sonnet-20241022` (Recommended)
+3. **Save and Test**
 
 ---
 
-## 🔬 物理引擎功能
+## 🔬 Physics Engine
 
-### 什么是物理引擎？
+The **Physics Engine** is Askit.'s high-performance computing core, built with C++ and optimized for real-time physics simulation.
 
-**物理引擎**是 Askit. 的高性能计算核心，基于 C++ 构建，专为实时物理模拟优化。
+### Supported Features
 
-### 支持的功能
-
-#### 1. 刚体碰撞（100球 @ 12000+ FPS）
-- 球体、立方体、圆柱体碰撞
-- 重力、摩擦力模拟
-- 铰链、弹簧约束
-
-#### 2. SPH流体（1000粒子 @ 700 FPS）
-- 光滑粒子流体动力学
-- 水、油等液体模拟
-
-#### 3. ODE求解器
-- Euler、RK4、RK45方法
-- 自适应步长控制
-
-#### 4. PDE求解器
-- 热传导方程
-- 波动方程
-- 泊松方程
+- **Rigid Body Collision** (100 balls @ 12000+ FPS)
+- **SPH Fluid** (1000 particles @ 700 FPS)
+- **ODE Solvers**: Euler, RK4, RK45 methods
+- **PDE Solvers**: Heat equation, Wave equation, Poisson equation
 
 ---
 
-## 📸 快照功能
+## 📸 Snapshot Feature
 
-### 什么是快照功能？
-
-**快照功能**是 Askit. 的核心特性之一，它能够自动记录动画中每一帧的场景状态，让 AI 能够"看到"和理解您的动画内容。
-
-### 工作原理
-
-当您创建动画时，Askit. 会：
-
-1. **自动捕获每一帧**
-   - 以固定时间间隔（默认 0.02 秒）记录场景状态
-   - 存储对象位置、物理参数、变量值等信息
-
-2. **构建时间轴缓存**
-   - 将所有帧的快照存储在内存中
-   - 形成完整的动画时间轴
-
-3. **提供上下文给 AI**
-   - AI 可以查询任意时间点的场景状态
-   - 理解动画的演变过程
-   - 基于当前状态生成后续代码
-
-### 快照记录的内容
-
-每个快照包含以下信息：
-
-#### 1. **对象位置信息**
-- 场景中所有对象的坐标
-- 对象的旋转角度
-- 对象的缩放比例
-
-#### 2. **物理状态**（如果使用了物理模拟）
-- 位置、速度、加速度
-- 动能、势能、总能量
-- 质量、重力等参数
-- 相关物理公式
-
-#### 3. **变量值**
-- 用户定义的变量
-- 控件的当前值
-- 动画参数
-
-#### 4. **时间信息**
-- 当前时间点
-- 动画总时长
-- 帧率信息
-
-### 使用场景
-
-快照功能在以下场景中特别有用：
-
-#### 场景 1：连续动画创建
-```
-用户："创建一个红色圆形"
-AI：创建圆形
-用户："让它向右移动"
-AI：基于当前圆形位置，添加移动动画
-```
-AI 能够"看到"圆形的当前位置，生成正确的移动代码。
-
-#### 场景 2：物理模拟分析
-```
-用户："创建一个自由落体动画"
-AI：创建物理模拟
-用户："在 t=2 秒时，小球的速度是多少？"
-AI：查询 t=2 秒的快照，返回速度值
-```
-
-#### 场景 3：动画调试
-```
-用户："为什么小球在 3 秒后消失了？"
-AI：检查 t=3 秒前后的快照，分析原因
-```
-
-### 注意事项
-
-- ✓ **自动运行**：快照功能完全自动，无需手动操作
-- ✓ **内存占用**：长时间动画会占用更多内存
-- ✓ **性能影响**：对于复杂场景，快照可能略微影响性能
-- ✓ **实时更新**：每次执行新代码后，快照会自动更新
+The **Snapshot Feature** automatically records the scene state of every frame in the animation, allowing AI to "see" and understand your animation content.
 
 ---
 
-## 🎬 实时渲染功能
+## 🎬 Real-time Rendering
 
-### 什么是实时渲染？
-
-**实时渲染功能**让您能够立即看到动画效果，无需等待漫长的渲染过程。Askit. 使用 OpenGL 技术实现高性能的实时渲染，让创作过程更加流畅。
-
-### 核心特性
-
-#### 1. **即时预览**
-- 代码执行后立即显示结果
-- 无需等待视频渲染
-- 所见即所得的创作体验
-
-#### 2. **交互式调整**
-- 实时修改动画参数
-- 即时查看效果变化
-- 快速迭代优化
-
-#### 3. **高性能渲染**
-- 基于 OpenGL 的硬件加速
-- 流畅的 60 FPS 渲染
-- 支持复杂场景
-
-### 使用方法
-
-实时渲染功能默认开启，您只需：
-
-1. **输入指令**
-   ```
-   用户："创建一个蓝色圆形，从左向右移动"
-   ```
-
-2. **AI 生成代码并执行**
-   - AI 理解您的需求
-   - 生成 ManimGL 代码
-   - 自动执行代码
-
-3. **立即查看效果**
-   - 渲染窗口实时显示动画
-   - 无需等待，即刻预览
-   - 可以暂停、播放、调整速度
-
-### 渲染控制
-
-在渲染窗口中，您可以：
-
-- **空格键**：暂停/播放动画
-- **鼠标拖拽**：旋转视角（3D 场景）
-- **滚轮**：缩放视图
-- **方向键**：移动相机
-
-### 性能优化建议
-
-为了获得最佳的实时渲染体验：
-
-1. **硬件要求**
-   - 支持 OpenGL 3.3+ 的显卡
-   - 推荐使用独立显卡
-   - 至少 4GB 内存
-
-2. **优化技巧**
-   - 避免创建过多对象（建议 < 1000 个）
-   - 使用简单的几何形状
-   - 合理设置帧率（默认 60 FPS）
-
-3. **常见问题**
-   - 如果渲染卡顿，尝试降低对象数量
-   - 如果窗口无响应，检查显卡驱动是否更新
-   - 如果颜色显示异常，检查 OpenGL 版本
+High-performance real-time rendering using OpenGL technology. Results are displayed immediately after code execution, no waiting for rendering required.
 
 ---
 
-## ⏱️ 进度条功能
+## ⏱️ Timeline Control
 
-### 什么是进度条功能？
-
-**进度条功能**是 Askit. 的时间轴控制系统，让您能够精确控制动画的播放进度，随时跳转到任意时间点查看效果。
-
-### 核心功能
-
-#### 1. **时间轴显示**
-- 显示动画的总时长
-- 标记当前播放位置
-- 可视化时间进度
-
-#### 2. **精确控制**
-- 拖动进度条跳转到任意时间点
-- 点击进度条快速定位
-- 实时更新场景状态
-
-#### 3. **播放控制**
-- 播放/暂停按钮
-- 播放速度调节
-- 循环播放选项
-
-### 使用方法
-
-进度条位于渲染窗口底部，使用非常简单：
-
-#### 基本操作
-
-1. **播放/暂停**
-   - 点击 ▶️ 按钮开始播放
-   - 点击 ⏸️ 按钮暂停播放
-   - 或使用键盘空格键
-
-2. **跳转到指定时间**
-   - 拖动进度条滑块
-   - 或点击进度条的任意位置
-   - 场景会立即更新到该时间点
-
-### 使用场景
-
-#### 场景 1：检查特定时刻
-```
-用户："在 t=3 秒时，小球的位置对吗？"
-操作：拖动进度条到 3 秒位置，查看小球位置
-```
-
-#### 场景 2：调试动画
-```
-发现动画在某个时刻出现问题
-操作：反复播放该时间段，定位问题
-```
-
-#### 场景 3：快速预览
-```
-动画时长 30 秒，想快速查看整体效果/
-```
-
-### 注意事项
-
-- ✓ **实时更新**：拖动进度条时，场景会实时更新到对应时间点
-- ✓ **快照支持**：进度条功能依赖快照系统，确保动画已完整缓存
-- ✓ **性能影响**：频繁跳转可能略微影响性能
-- ✓ **精确定位**：可以精确到 0.01 秒级别
+A timeline control system that allows you to precisely control animation playback progress and jump to any point in time to view effects.
 
 ---
 
-## 🎛️ 控件交互功能
+## 🎛️ Interactive Controls
 
-### 什么是控件交互功能？
+Supports sliders, buttons, checkboxes, and other controls to dynamically adjust parameters during animation runtime and observe the effects of parameter changes in real-time.
 
-**控件交互功能**让您能够在动画运行时动态调整参数，实时观察参数变化对动画的影响。这是 Askit. 最强大的交互式教学特性之一。
+---
 
-### 支持的控件类型
+## 🛠️ Tech Stack
 
-#### 1. **滑块控件（Slider）**
-- 调整数值参数
-- 设置最小值、最大值、步长
-- 实时更新动画
+<table>
+<tr>
+<td align="center" width="20%">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="40" height="40"/>
+<br><b>Python</b>
+</td>
+<td align="center" width="20%">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" width="40" height="40"/>
+<br><b>C++</b>
+</td>
+<td align="center" width="20%">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="40" height="40"/>
+<br><b>TypeScript</b>
+</td>
+<td align="center" width="20%">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="40" height="40"/>
+<br><b>React</b>
+</td>
+<td align="center" width="20%">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opengl/opengl-original.svg" width="40" height="40"/>
+<br><b>OpenGL</b>
+</td>
+</tr>
+</table>
 
-#### 2. **按钮控件（Button）**
-- 触发特定动作
-- 切换状态
-- 执行函数
+---
 
-#### 3. **复选框控件（Checkbox）**
-- 开关功能
-- 显示/隐藏对象
-- 启用/禁用效果
+## 📄 License
 
-### 使用方法
+This project is licensed under **GPL-3.0 License** - see the [LICENSE](LICENSE) file for details.
 
-通过 AI 指令创建交互式控件非常简单：
+---
 
-#### 示例 1：创建滑块控制速度
-```
-用户："创建一个小球自由落体动画，添加一个滑块控制重力加速度"
+<div align="center">
 
-AI 会生成代码：
-- 创建小球和物理模拟
-- 添加滑块控件（范围 0-20）
-- 滑块值改变时更新重力参数
-```
+[![Website](https://img.shields.io/badge/Website-askit.space-blue?style=flat-square&logo=google-chrome)](https://askit.space)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-Model-yellow?style=flat-square&logo=huggingface)](https://huggingface.co/SStarrySSky/Askit-OLMo-32B-Spatial-Thinking-Preview)
+[![GitHub](https://img.shields.io/badge/GitHub-SStarrySSky-black?style=flat-square&logo=github)](https://github.com/SStarrySSky/Askit.)
 
-#### 示例 2：创建按钮控制动画
-```
-用户："创建一个圆形，添加一个按钮，点击时改变颜色"
+**Made with ❤️ by Starry Sky**
 
-AI 会生成代码：
-- 创建圆形对象
-- 添加按钮控件
-- 按钮点击时随机改变圆形颜色
-```
-
-#### 示例 3：创建复选框控制显示
-```
-用户："创建坐标轴，添加复选框控制是否显示网格"
-
-AI 会生成代码：
-- 创建坐标轴和网格
-- 添加复选框控件
-- 复选框状态改变时显示/隐藏网格
-```
-
-### 使用场景
-
-控件交互功能特别适合以下教学场景：
-
-#### 1. **参数探索**
-让学生通过调整参数，直观理解参数对结果的影响：
-- 物理模拟中的重力、摩擦力
-- 数学函数的系数、指数
-- 几何图形的大小、角度
-
-#### 2. **对比实验**
-通过控件快速切换不同状态，进行对比：
-- 有/无空气阻力的运动对比
-- 不同初速度的抛物线对比
-- 不同参数的函数图像对比
-
-#### 3. **交互式演示**
-在课堂演示中，根据学生反馈实时调整：
-- 调整动画速度适应讲解节奏
-- 切换显示内容突出重点
-- 动态修改参数回答学生问题
-
-### 注意事项
-
-- ✓ **实时响应**：控件值改变时，动画会立即更新
-- ✓ **性能考虑**：复杂计算可能导致控件响应延迟
-- ✓ **控件位置**：控件显示在渲染窗口的右侧面板
-- ✓ **多控件支持**：可以同时创建多个控件
+</div>
