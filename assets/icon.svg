@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-  <!-- Letter A -->
-  <path d="M 100 38 L 175 218 L 145 218 L 130 176 L 70 176 L 55 218 L 25 218 Z M 78 148 L 122 148 L 100 78 Z" fill="#000000"/>
-
-  <!-- Google 4-pointed sparkle star -->
-  <path d="M 200 18 Q 200 58 166 58 Q 200 58 200 98 Q 200 58 234 58 Q 200 58 200 18 Z" fill="#000000"/>
-</svg>
